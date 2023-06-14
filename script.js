@@ -9,13 +9,14 @@ $(function () {
     function displayCurrentDay() {
       var currentDay = dayjs().format("MMMM DD, YYYY");
       currentDayEl.textContent = currentDay;
-      
+      console.log(displayCurrentDay);
+      console.log(currentDayEl);
     }
   
     // Check the timeblocks' time and apply appropriate styling
     function updateTimeblockStyling() {
         var currentHour = dayjs().format(); // Get the current hour using the Day.js library and store it in the variable currentHour
-        console.log(currentHour); // Print the current hour to the console
+        console.log(currentHour); 
       
         saveBtns.each(function() { // Iterate over each element in the saveBtns set using the jQuery each function
           var hour = parseInt($(this).data("hour")); // Get the value of the "hour" attribute of the current element and convert it to an integer
@@ -28,10 +29,10 @@ $(function () {
             $(this).parent().addClass("future"); // Add the "future" class to the parent element
           }
         });
-      }
+      } 
   
-    // Load the saved events from local storage
-    function loadSavedEvents() {
+     // Load the saved events from local storage
+     function loadSavedEvents() {
         saveBtns.each(function() { // Iterate over each element in the saveBtns set using the jQuery each function
           var hour = $(this).data("hour"); // Get the value of the "hour" data attribute of the current element and store it in the variable hour
           var event = localStorage.getItem(hour); // Retrieve the saved event from the local storage based on the hour key
@@ -42,39 +43,37 @@ $(function () {
         });
       }
   
-    // Save the event to local storage when the save button is clicked
-    function saveEvent(event) { //function called saveEvent that takes an event as a parameter.
-        function saveEvent(event) { //
-        var textarea = $(event.target).closest(".row").find(".description");
-        var hour = $(event.target).data("hour");
-        var value = textarea.val().trim();
+     // Save the event to local storage when the save button is clicked
+     function saveEvent(event) { //function called saveEvent that takes an event as a parameter.
         
-        if (value !== "") {
-          localStorage.setItem(hour, value);
+        var textarea = $(event.target).closest(".row").find(".description");//element within the closest parent element with the "row" class. It uses the closest function to find the parent element and then find to select the textarea element within it
+        var hour = $(event.target).data("hour");//uses the event to get the value of the "hour" data attribute from the element that triggered the event
+        var value = textarea.val().trim(); //etrieves the value of the textarea
+        
+        if (value !== "") {//checks if the value is not empty.
+          localStorage.setItem(hour, value);//object to store the value in the local storage. 
         } else {
-          localStorage.removeItem(hour);
+          localStorage.removeItem(hour);//  if the value is empty, it uses the localStorage object to remove the item corresponding to the "hour" from the local storage.
         }
-      }
-      
+    }
       // Bind event listeners to save buttons
-      saveBtns.each((index, btn) => {
-        $(btn).on("click", saveEvent);
-      });
+      saveBtns.on("click", saveEvent);
     
       // Initial setup
       displayCurrentDay();
       updateTimeblockStyling();
       loadSavedEvents();
+   
     
       // Update timeblock styling every minute
       setInterval(function() {
         updateTimeblockStyling();
       }, 60000);
-    }
-    
+     
 });
   
 
+   
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
