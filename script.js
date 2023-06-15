@@ -1,11 +1,9 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
 $(function() {
     var container = $("#container"); // Get the container element with id "container"
     var saveBtns = $(".saveBtn"); // Get all elements with the class "saveBtn"
     var DayCurrent = $("#currentDay"); // Get the element with id "currentDay"
-  
+    var headhour=$(".headhour");
+    var headminutes=$("#headminutes");
     // Display the current day at the top of the calendar
     function displayCurrentDay() {
       var currentDay = dayjs().format("MMMM DD, YYYY"); // Get the current day using Day.js library and format it as "Month Day, Year"
@@ -14,9 +12,12 @@ $(function() {
   
     // Check the timeblocks' time and apply appropriate styling
     function updateTimeblockStyling() {
-      var currentHour = parseInt(dayjs().format("HH")); // Get the current hour using Day.js library and parse it as an integer
-  
-      saveBtns.each(function() {
+      var currentHour = parseInt(dayjs().format("h")); 
+      var currentMinutes = parseInt(dayjs().format("m")); // Get the current hour using Day.js library and parse it as an integer
+        console.log( parseInt(dayjs().format("mm")));
+        headhour.text(currentHour);
+        headminutes.text(currentMinutes);
+        saveBtns.each(function() {
         var hour = parseInt($(this).data("hour")); // Get the value of the "data-hour" attribute of the current element and convert it to an integer
   
         if (hour < currentHour) {

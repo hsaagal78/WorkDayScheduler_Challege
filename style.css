@@ -3,6 +3,12 @@ body {
     font-size: 16px;
   }
   
+
+  #headhour, #headminutes, .headhour {
+
+    display: inline-block;
+
+  }
   textarea {
     background: transparent;
     border: none;
