@@ -3,7 +3,7 @@
 // in the html.
 $(function() {
     var container = $("#container"); // Get the container element with id "container"
-    var saveBtns = $(".btn"); // Get all elements with the class "btn"
+    var saveBtns = $(".saveBtn"); // Get all elements with the class "saveBtn"
     var DayCurrent = $("#currentDay"); // Get the element with id "currentDay"
   
     // Display the current day at the top of the calendar
@@ -14,10 +14,10 @@ $(function() {
   
     // Check the timeblocks' time and apply appropriate styling
     function updateTimeblockStyling() {
-      var currentHour = dayjs().format(); // Get the current hour using Day.js library
+      var currentHour = parseInt(dayjs().format("HH")); // Get the current hour using Day.js library and parse it as an integer
   
       saveBtns.each(function() {
-        var hour = parseInt($(this).data("hour")); // Get the value of the "hour" attribute of the current element and convert it to an integer
+        var hour = parseInt($(this).data("hour")); // Get the value of the "data-hour" attribute of the current element and convert it to an integer
   
         if (hour < currentHour) {
           $(this).parent().addClass("past"); // If the hour is earlier than the current hour, add the "past" class to the parent element
@@ -32,11 +32,12 @@ $(function() {
     // Load the saved events from local storage
     function loadSavedEvents() {
       saveBtns.each(function() {
-        var hour = $(this).data("hour"); // Get the value of the "hour" attribute of the current element
-        var event = localStorage.getItem(hour); // Retrieve the saved event from local storage based on the hour key
+        var hour = $(this).data("hour"); // Get the value of the "data-hour" attribute of the current element
+        var event = localStorage.getItem(hour);
+        console.log(localStorage.getItem(hour)); // Retrieve the saved event from local storage based on the hour key
         var inputField = $("#hour-" + hour); // Get the input field element with id "hour-hourValue"
   
-        if (event) {
+        if (event !== null) { // Check if the event is not null
           inputField.val(event); // Set the value of the input field to the retrieved event
         }
       });
@@ -52,7 +53,7 @@ $(function() {
       if (value !== "") {
         localStorage.setItem(hour, value); // Store the value in local storage with the hour as the key
       } else {
-        localStorage.removeItem(hour); // If the value is empty, remove the corresponding item from local storage
+        localStorage.clear(); // If the value is empty, remove all items from local storage
       }
     }
   
@@ -68,8 +69,6 @@ $(function() {
       updateTimeblockStyling();
     }, 60000);
   });
-
-   
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
